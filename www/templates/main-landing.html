@@ -1,6 +1,6 @@
 <ion-view>
   <ion-nav-title>
-    <div class='color-yellow text-center'>میگ میگ</div>
+    <div class='color-yellow text-center myText'>میگ میگ</div>
   </ion-nav-title>
 
   <ion-content scroll='false' drag-content="false" style="bottom: 0">
@@ -8,7 +8,7 @@
       <div id='set-top' class='target-box bg-dark'>
         <!--<ion-toggle ng-model="airplaneMode" toggle-class="toggle-calm">Airplane Mode</ion-toggle>-->
         <div ng-click="availableOrNot()" class="item item-toggle toggle-large ng-valid" ng-model="airplaneMode" toggle-class="toggle-calm" style="padding-right: 15px;border-style: none">
-          <div style="direction: rtl;color: #F2C21E"><span id="availableText">خارج از دسترس</span></div>
+          <div style="direction: rtl;color: #F2C21E"><span id="availableText" class="myText">خارج از دسترس</span></div>
           <label class="toggle toggle-balanced disable-user-behavior" style="right: inherit">
             <input type="checkbox" ng-model="airplaneMode"
                    class="ng-untouched ng-valid ng-dirty ng-valid-parse"
@@ -29,26 +29,26 @@
         <div>
           <div class="row no-padding b-border-light">
             <div class="col  r-border-light p-10 text-center">
-              <p class='color-white p-head '>مبدا</p>
+              <p class='color-white p-head myText'>مبدا</p>
               <p class='color-gery'>{{tripInfo.slat}}</p>
             </div>
           </div>
           <div class="row no-padding b-border-light">
             <div class="col  r-border-light p-10 text-center">
-              <p class='color-white p-head '>مقصد</p>
+              <p class='color-white p-head myText'>مقصد</p>
               <p class='color-gery'>{{tripInfo.slng}}</p>
             </div>
           </div>
           <div class="row no-padding b-border-light">
             <div class="col  p-10 text-center">
-              <p class='color-white p-head '>هزینه</p>
+              <p class='color-white p-head myText'>هزینه</p>
               <p class='color-gery'>{{tripInfo.cost}}</p>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class='color-white text-center net-error'>به اینترنت متصل نیستید</div>
+    <div class='color-white text-center net-error myText'>به اینترنت متصل نیستید</div>
   </ion-content>
 
   <ion-footer-bar style="background-color: transparent !important;height: 88px;z-index: 100" class="bg-dark">
@@ -65,19 +65,19 @@
       </ion-scroll>
     </div>
     <div class='footer-box bg-dark color-yellow' ng-show='pop_status == 1'>
-      <div class='w-50-p pull-left my-button h-100-p text-center border-r-yellow' ng-click='rejectBeforeAccept()'>لغو
+      <div class='w-50-p pull-left my-button h-100-p text-center border-r-yellow myText' ng-click='rejectBeforeAccept()'>لغو
       </div>
-      <div class='w-50-p pull-left my-button h-100-p text-center' ng-click='accept()'>تایید</div>
+      <div class='w-50-p pull-left my-button h-100-p text-center myText' ng-click='accept()'>تایید</div>
     </div>
 
     <div class='footer-box bg-dark color-yellow' ng-show='pop_status == 2'>
-      <div class='w-50-p pull-left my-button h-100-p text-center border-r-yellow' ng-click='cancelAfterAccept()'>لغو
+      <div class='w-50-p pull-left my-button h-100-p text-center border-r-yellow myText' ng-click='cancelAfterAccept()'>لغو
       </div>
-      <div class='w-50-p pull-left my-button h-100-p text-center' ng-click='arrived()'>من رسیدم</div>
+      <div class='w-50-p pull-left my-button h-100-p text-center myText' ng-click='arrived()'>من رسیدم</div>
     </div>
 
     <div class='footer-box bg-dark color-yellow' ng-show='pop_status == 3'>
-      <div class='my-button h-100-p text-center' ng-click='endOfTrip()'>اتمام سفر</div>
+      <div class='my-button h-100-p text-center myText' ng-click='endOfTrip()'>اتمام سفر</div>
     </div>
 
   </ion-footer-bar>

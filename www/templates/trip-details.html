@@ -1,6 +1,6 @@
 <ion-view  class='bg-grey'>
   <ion-nav-title>
-    <div class='color-yellow text-center'>جزییات سفر</div>
+    <div class='color-yellow text-center myText'>جزییات سفر</div>
   </ion-nav-title>
   <ion-content style="direction: rtl" >
     <div class='h-100-p  '>
@@ -8,80 +8,80 @@
 
         <div class="row ">
           <div class="col col-50 " >
-            <p class='color-white'>کد رهگیری</p>
+            <p class='color-white myText'>کد رهگیری</p>
           </div>
           <div class="col col-50 " >
-            <div class="color-gery">{{details.uid}} </div>
+            <div class="color-gery myText">{{details.uid}} </div>
           </div>
         </div>
         <div class="row" ng-click="showFrom()">
           <div class="col col-50 col-center" >
-            <p class='color-white'>مبدا</p>
-            <div class=" color-gery">{{details.source}}</div>
+            <p class='color-white myText'>مبدا</p>
+            <div class=" color-gery myText">{{details.source}}</div>
           </div>
           <div class="col col-50 col-center" >
-            <div class="m-top-30 color-gery">{{details.time}} , {{details.date}}</div>
+            <div class="m-top-30 color-gery myText">{{details.time}} , {{details.date}}</div>
           </div>
         </div>
         <div class='m-top-30 text-center'>
           <hr class='yellow-hr'></hr>
-          <span class='mid-item bg-grey color-white'>به</span>
+          <span class='mid-item bg-grey color-white myText'>به</span>
         </div>
 
         <div class="row ">
           <div class="col  col-center" >
-            <p class='color-white'>مقصد</p>
-            <div class=" color-gery">{{details.destination}}</div>
+            <p class='color-white myText'>مقصد</p>
+            <div class=" color-gery myText">{{details.destination}}</div>
           </div>
           <div class="col   col-center" >
-            <div class="m-top-30 color-gery" ng-show='details.drop_time.length'>{{details.time}} , {{details.date}}</div>
+            <div class="m-top-30 color-gery" ng-show='details.drop_time.length myText'>{{details.time}} , {{details.date}}</div>
           </div>
         </div>
 
       </div>
-      <p class='text-center color-yellow bg-light p-head no-margin'>جرییات پیک</p>
+      <p class='text-center color-yellow bg-light p-head no-margin myText'>جرییات پیک</p>
 
       <div class="row no-padding b-border-light">
         <div class="col  r-border-light p-10 text-center" >
-          <p class='color-white p-head '>نوع پیک</p>
-          <p class='color-gery'>{{details.taxi_type}}</p>
+          <p class='color-white p-head myText'>نوع پیک</p>
+          <p class='color-gery myText'>{{details.taxi_type}}</p>
         </div>
         <div class="col  r-border-light p-10 text-center" >
-          <p class='color-white p-head '>نام راننده</p>
-          <p class='color-gery'>{{details.driver}}</p>
+          <p class='color-white p-head myText'>نام راننده</p>
+          <p class='color-gery myText'>{{details.driver}}</p>
         </div>
         <div class="col  r-border-light p-10 text-center" >
-          <p class='color-white p-head '>شماره راننده</p>
-          <p class='color-gery'>{{details.tel}}</p>
+          <p class='color-white p-head myText'>شماره راننده</p>
+          <p class='color-gery myText'>{{details.tel}}</p>
         </div>
         <div class="col  r-border-light p-10 text-center" >
-          <p class='color-white p-head '>پلاک</p>
-          <p class='color-gery'>{{details.number}}</p>
+          <p class='color-white p-head myText'>پلاک</p>
+          <p class='color-gery myText'>{{details.number}}</p>
         </div>
       </div>
 
       <div id='det-box2' class='b-border-light f-size-17'>
         <div class='row'>
-          <div class='col'><p class='color-yellow p-head no-margin'>جرییات هزینه</p> </div>
+          <div class='col'><p class='color-yellow p-head no-margin myText'>جرییات هزینه</p> </div>
         </div>
         <div class="row p-top-5  b-border-light">
           <div class="col  p-10 col-center" >
-            <p class='color-gery no-margin'>مصافت</p>
+            <p class='color-gery no-margin myText'>مصافت</p>
           </div>
           <div class="col   p-10 text-center col-center" >
-            <p class='pull-right'><span class='color-gery'>{{details.km}}</span> <span class='color-yellow'>km</span></p>
+            <p class='pull-right'><span class='color-gery myText'>{{details.km}}</span> <span class='color-yellow'>km</span></p>
           </div>
         </div>
         <div class="row p-top-5 b-border-light">
           <div class="col  p-10 col-center" >
-            <p class='color-gery no-margin'>مجموع</p>
+            <p class='color-gery no-margin myText'>مجموع</p>
           </div>
           <div class="col   p-10 text-center col-center" >
-            <p class='pull-right'> <span class='color-gery'>{{details.cost}}</span> <span class='color-yellow'>ریال</span></p>
+            <p class='pull-right'> <span class='color-gery myText'>{{details.cost}}</span> <span class='color-yellow myText'>ریال</span></p>
           </div>
         </div>
       </div>
     </div>
-    <div class='color-white text-center net-error' >به اینترنت متصل نیستید</div>
+    <div class='color-white text-center net-error myText' >به اینترنت متصل نیستید</div>
   </ion-content>
 </ion-view>

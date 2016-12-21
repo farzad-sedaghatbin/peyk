@@ -249,7 +249,7 @@ angular.module('CallApp', ['ionic', 'ngCordova', 'CallAppcontrollers'])
             result = results.rows.item(0).log;
           }
           if (!result) {
-            $location.path('/landing');
+            $location.path('app/landing');
           }
           else {
             $location.path('app/landing');
