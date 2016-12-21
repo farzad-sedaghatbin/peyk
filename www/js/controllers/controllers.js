@@ -311,7 +311,7 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
 	$scope.load_trips = function(){
     $http({
       method: "POST",
-      url: "http://192.168.161.111:8080/api/1/driverTrips"
+      url: "http://migmig.cfapps.io/api/1/driverTrips"
     }).then(function (resp) {
       $rootScope.Trips = resp.data;
       $rootScope.active_trip = $rootScope.Trips.inProgressTrips;
