@@ -205,10 +205,26 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
   $scope.availableOrNot = function () {
     if (available){
       available = false;
-      $("#availableText").html("خارج از دسترس")
+      $("#availableText").html("خارج از دسترس");
+      $http({
+        method: "POST",
+        url: "http://192.168.161.111:8080/api/1/unavailable"
+      }).then(function (resp) {
+      }, function (err) {
+      });
+      $interval.cancel(interval);
     } else {
       available = true;
-      $("#availableText").html("در دسترس")
+      $("#availableText").html("در دسترس");
+      if ($scope.tripInfo && ($scope.tripInfo.state == "accept" || $scope.tripInfo.state == "arrived")){
+        interval = $interval(function () {
+          socket.send("delivery,1,35.770412,51.444817")
+        }, 1000);
+      } else {
+        interval = $interval(function () {
+          socket.send("mylocation,1,35.770412,51.444817")
+        }, 1000);
+      }
     }
   };
   $scope.arrived = function () {
