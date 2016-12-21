@@ -1,0 +1,59 @@
+<ion-view>
+  <ion-nav-title>
+    <div class='color-yellow text-center'>میگ میگ</div>
+  </ion-nav-title>
+
+  <ion-content scroll='false' drag-content="false">
+    <div id='main-land-container'>
+      <div id="map3" data-tap-disabled="true"> <!-- -->
+      </div>
+    </div>
+
+    <div id='my-pop' class='animation-styles bg-dark1'>
+      <!--http://codepen.io/anon/pen/avNRwz -->
+      <my-date-time-picker placeholder="Enter Date here" title="Select Date" ng-model="my_model"/>
+      <!---->
+      <div id='tab-hide' class='bg-dark1 visible'>
+        <div>
+          <div class="row no-padding b-border-light">
+            <div class="col  r-border-light p-10 text-center">
+              <p class='color-white p-head '>مبدا</p>
+              <p class='color-gery'>{{driver.name}}</p>
+            </div>
+          </div>
+          <div class="row no-padding b-border-light">
+            <div class="col  r-border-light p-10 text-center">
+              <p class='color-white p-head '>مقصد</p>
+              <p class='color-gery'>{{driver.mobile}}</p>
+            </div>
+          </div>
+          <div class="row no-padding b-border-light">
+            <div class="col  p-10 text-center">
+              <p class='color-white p-head '>هزینه</p>
+              <p class='color-gery'>{{driver.number}}</p>
+            </div>
+          </div>
+          <div class="row no-padding b-border-light">
+            <div class="col  p-10 text-center">
+              <p class='color-white p-head '>شماره تماس</p>
+              <p class='color-gery'>{{driver.number}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='color-white text-center net-error'>به اینترنت متصل نیستید</div>
+  </ion-content>
+
+  <ion-footer-bar class="bg-dark">
+    <div class='footer-box bg-dark color-yellow' ng-show='pop_status == false'>
+      <div class='w-50-p pull-left my-button h-100-p text-center border-r-yellow' ng-click='ride("later")'>رزرو</div>
+      <div class='w-50-p pull-left my-button h-100-p text-center' ng-click='ride("now")'>درخواست</div>
+    </div>
+
+    <div class='footer-box bg-dark color-yellow' ng-show='pop_status == true'>
+      <div class='w-50-p pull-left my-button h-100-p text-center border-r-yellow' ng-click='cancel()'>لغو</div>
+      <div class='w-50-p pull-left my-button h-100-p text-center' ng-click='book()'>تایید</div>
+    </div>
+  </ion-footer-bar>
+</ion-view>

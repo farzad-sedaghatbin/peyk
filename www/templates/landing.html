@@ -1,0 +1,34 @@
+<ion-view view-title="landing">
+  <ion-content scroll="false" >
+	 <div  class="bg-yellow full-height" full-height>
+			<div class='main-container'>
+				<div id='logo-box'>
+					<img class='logo vertical-middle' src='img/logo.jpg'/>
+				</div>
+				<div id='sign-in-box'>
+					<div class='vertical-middle'>
+						<!-- <a href='#/signin'><input id='signup-redirect-btn'  class='btn bg-yellow border-white' type='button' value='New user ? Sign Up now !' /></a> </br> -->
+						<input ng-click='sign_up()' id='signup-redirect-btn'  class='btn bg-yellow border-white' type='button' value="ثبت نام" /></br>
+
+						<input ng-click='show_login1()' id='signIn-redirect-btn'  class='btn bg-white' type='button' value="ورود" /> </br>
+						<a class='a m-top-10' href=''>فراموشی رمز عبور</a>
+					</div>
+				</div>
+				<div id='sign-in-with' class='text-center'>
+					<div class='vertical-middle'>
+
+						<!--<div class='white-line'></div>-->
+						<!--<div  class='line-title text-center' >-->
+							<!--<span class='bg-yellow'>{{ 'Or sign In with' | langTranslate: appConvertedLang['Or_sign_In_with'] }}</span>-->
+						<!--</div>-->
+
+						<!--<a ng-click="facebookLogin()"><img src='../img/icons/fb.png' /></a>-->
+						<!--<a ng-click='googleLogin()'><img src='../img/icons/g+.png' /></a>-->
+
+					</div>
+				</div>
+			</div>
+	  </div>
+	<div class='color-white text-center net-error' >به اینترنت متصل نیستید</div>
+  </ion-content>
+</ion-view>
