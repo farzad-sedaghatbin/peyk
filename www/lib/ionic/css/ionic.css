@@ -6119,7 +6119,7 @@ input[type="radio"][disabled], input[type="checkbox"][disabled], input[type="rad
   height: 31px;
   border: solid 2px #e6e6e6;
   border-radius: 20px;
-  background-color: red;
+  background-color: #33cd5f;
   content: ' ';
   cursor: pointer;
   pointer-events: none; }

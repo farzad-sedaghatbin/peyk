@@ -7,9 +7,10 @@
     <div id='main-land-container'>
       <div id='set-top' class='target-box bg-dark'>
         <!--<ion-toggle ng-model="airplaneMode" toggle-class="toggle-calm">Airplane Mode</ion-toggle>-->
-        <div ng-click="availableOrNot()" class="item item-toggle toggle-large ng-valid" ng-model="airplaneMode" toggle-class="toggle-calm" style="padding-right: 15px;border-style: none">
-          <div style="direction: rtl;color: #F2C21E"><span id="availableText" class="myText">خارج از دسترس</span></div>
-          <label class="toggle toggle-balanced disable-user-behavior" style="right: inherit">
+        <div ng-click="availableOrNot()" class="item item-toggle toggle-large ng-valid" ng-model="airplaneMode"
+             toggle-class="toggle-calm" style="padding-right: 15px;border-style: none">
+          <div style="direction: rtl;color: #F2C21E"><span id="availableText" class="myText">در دسترس</span></div>
+          <label class="toggle toggle-assertive disable-user-behavior" style="right: inherit">
             <input type="checkbox" ng-model="airplaneMode"
                    class="ng-untouched ng-valid ng-dirty ng-valid-parse"
                    value="on" style="">
@@ -19,24 +20,27 @@
           </label>
         </div>
       </div>
-      <div id="map" data-tap-disabled="true"> <!-- -->
+      <button id="upperText" ng-click="CallNumber()" style="bottom: 100px" ng-show='pop_status == 2'
+              class="button button-fab button-fab-bottom-right expanded button-energized-900"><i
+        class="icon ion-android-call"></i></button>
+      <div id="map" data-tap-disabled="true">
       </div>
       <input id='Tripdate' type='datetime-local' ng-model='Trip_Date'/>
     </div>
 
-    <div id='my-pop' class='animation-styles bg-dark1' style="padding-bottom: 50px;">
+    <div id='my-pop' class='animation-styles bg-dark1' style="padding-bottom: 80px;">
       <div id='tab-hide' class='bg-dark1 visible'>
         <div>
           <div class="row no-padding b-border-light">
             <div class="col  r-border-light p-10 text-center">
               <p class='color-white p-head myText'>مبدا</p>
-              <p class='color-gery'>{{tripInfo.slat}}</p>
+              <p class='color-gery'>{{tripInfo.source}}</p>
             </div>
           </div>
           <div class="row no-padding b-border-light">
             <div class="col  r-border-light p-10 text-center">
               <p class='color-white p-head myText'>مقصد</p>
-              <p class='color-gery'>{{tripInfo.slng}}</p>
+              <p class='color-gery'>{{tripInfo.destination}}</p>
             </div>
           </div>
           <div class="row no-padding b-border-light">
@@ -57,7 +61,7 @@
         <div class="row no-padding text-center ">
           <div class="col col-25" ng-class="{active_cab : active_cab == $index }" ng-click='clicked_item($index)'
                ng-repeat="trip in trips">
-            <div class="col color-yellow">{{trip.tripInfo.address | limitTo:7 }}<span>..</span></div>
+            <div class="col color-yellow"><span class="myText">سفر {{$index + 1}}</span></div>
             <img ng-src='img/{{cab.cartype}}.png' err-SRC="img/Sedan.png" style='width: 50px'/>
             <!-- <div class="col color-gery">{{day.number}}</div> -->
           </div>
@@ -65,13 +69,15 @@
       </ion-scroll>
     </div>
     <div class='footer-box bg-dark color-yellow' ng-show='pop_status == 1'>
-      <div class='w-50-p pull-left my-button h-100-p text-center border-r-yellow myText' ng-click='rejectBeforeAccept()'>لغو
+      <div class='w-50-p pull-left my-button h-100-p text-center border-r-yellow myText'
+           ng-click='rejectBeforeAccept()'>لغو
       </div>
       <div class='w-50-p pull-left my-button h-100-p text-center myText' ng-click='accept()'>تایید</div>
     </div>
 
     <div class='footer-box bg-dark color-yellow' ng-show='pop_status == 2'>
-      <div class='w-50-p pull-left my-button h-100-p text-center border-r-yellow myText' ng-click='cancelAfterAccept()'>لغو
+      <div class='w-50-p pull-left my-button h-100-p text-center border-r-yellow myText' ng-click='cancelAfterAccept()'>
+        لغو
       </div>
       <div class='w-50-p pull-left my-button h-100-p text-center myText' ng-click='arrived()'>من رسیدم</div>
     </div>

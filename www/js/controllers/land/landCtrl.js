@@ -62,12 +62,7 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
     if (!$scope.map) {
       return;
     }
-    var contentString = "<div style='width: 200px'><a  ng-click='clickTest()'>{{Location}}</a></div>";
-    var compiled = $compile(contentString)($scope);
     var image = 'img/icons/google_marker.png';
-    $scope.infowindow = new google.maps.InfoWindow({
-      content: compiled[0]
-    });
     navigator.geolocation.getCurrentPosition(function (pos) {
       //console.log(pos);
       //alert(JSON.stringify(pos));
@@ -78,10 +73,6 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
         map: $scope.map,
         title: '',
         icon: image
-      });
-      $scope.infowindow.open($scope.map, marker);
-      google.maps.event.addListener(marker, 'click', function () {
-        $scope.infowindow.open($scope.map, marker);
       });
       $scope.map.setCenter(myLatlng);
       $ionicLoading.hide();
@@ -164,7 +155,9 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
     startMarker = $scope.trips[index].start;
     endMarker = $scope.trips[index].end;
     startMarker.setVisible(true);
+    startMarker.setMap($scope.map);
     endMarker.setVisible(true);
+    endMarker.setMap($scope.map);
     var element = $("#my-pop");
     switch ($scope.tripInfo.state) {
       case "request":
@@ -211,14 +204,14 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
       $('#tab-hide').removeClass('hidden');
     }, 300);
   }
-  var available = false;
+  var available = true;
   $scope.availableOrNot = function () {
     if (available){
       available = false;
       $("#availableText").html("خارج از دسترس");
       $http({
         method: "POST",
-        url: "http://192.168.161.111:8080/api/1/unavailable"
+        url: "https://192.168.161.111:8080/api/1/unavailable"
       }).then(function (resp) {
       }, function (err) {
       });
@@ -237,12 +230,17 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
       }
     }
   };
+  $scope.CallNumber = function(number){
+    window.plugins.CallNumber.callNumber(function(){
+    }, function(){
+    }, number)
+  };
   $scope.arrived = function () {
     $scope.tripInfo.state = "arrived";
     $scope.pop_status = 3;
     $http({
       method: "POST",
-      url: "http://migmig.cfapps.io/api/1/arrived",
+      url: "https://migmig.cfapps.io/api/1/arrived",
       data: $scope.tripInfo.uid
     }).then(function (resp) {
     }, function (err) {
@@ -254,7 +252,7 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
     $scope.pop_status = 2;
     $http({
       method: "POST",
-      url: "http://migmig.cfapps.io/api/1/approvedDriver",
+      url: "https://migmig.cfapps.io/api/1/approvedDriver",
       data: $scope.tripInfo.uid
     }).then(function (resp) {
       $interval.cancel(interval);
@@ -270,7 +268,7 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
     animateMyPop();
     $http({
       method: "POST",
-      url: "http://migmig.cfapps.io/api/1/rejectBeforeDriver",
+      url: "https://migmig.cfapps.io/api/1/rejectBeforeDriver",
       data: $scope.tripInfo.uid
     }).then(function (resp) {
     }, function (err) {
@@ -281,7 +279,7 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
     resetAllThings();
     $http({
       method: "POST",
-      url: "http://migmig.cfapps.io/api/1/rejectAfterDriver",
+      url: "https://migmig.cfapps.io/api/1/rejectAfterDriver",
       data: $scope.tripInfo.uid
     }).then(function (resp) {
     }, function (err) {
@@ -304,7 +302,7 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
     resetAllThings();
     $http({
       method: "POST",
-      url: "http://migmig.cfapps.io/api/1/endOfTrip",
+      url: "https://migmig.cfapps.io/api/1/endOfTrip",
       data: $scope.tripInfo.uid
     }).then(function (resp) {
     }, function (err) {
