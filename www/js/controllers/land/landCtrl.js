@@ -97,7 +97,8 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
       socket.send("mylocation,1,35.770412,51.444817")
     }, 1000);
   };
-  var image = 'img/icons/google_marker.png';
+  var startImage = 'img/source.png';
+  var endImage = 'img/destination.png';
   $scope.pop_status = 0;
   var startMarker;
   var endMarker;
@@ -120,14 +121,14 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
           position: start,
           map: $scope.map,
           title: '',
-          icon: image
+          icon: startImage
         });
         var end = new google.maps.LatLng(data.tripInfo.dlat, data.tripInfo.dlng);
         endMarker = new google.maps.Marker({
           position: end,
           map: $scope.map,
           title: '',
-          icon: image
+          icon: endImage
         });
         bound.extend(start);
         bound.extend(end);
