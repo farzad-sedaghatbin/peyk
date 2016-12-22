@@ -112,7 +112,7 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
           position: start,
           map: $scope.map,
           title: '',
-          icon: startImage
+          icon: startImage 
         });
         var end = new google.maps.LatLng(data.tripInfo.dlat, data.tripInfo.dlng);
         endMarker = new google.maps.Marker({
