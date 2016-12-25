@@ -62,7 +62,7 @@ angular.module('CallApp', ['ionic', 'ngCordova', 'CallAppcontrollers'])
     $ionicPlatform.ready(function () {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
-   
+
       if (window.cordova && window.cordova.plugins.Keyboard) {
         cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
         cordova.plugins.Keyboard.disableScroll(true);
@@ -133,7 +133,9 @@ angular.module('CallApp', ['ionic', 'ngCordova', 'CallAppcontrollers'])
       if (result) {
         $http.defaults.headers.common.Authorization = result;
       } else {
-        delete $http.defaults.headers.common.Authorization;
+        try {
+          delete $http.defaults.headers.common.Authorization;
+        } catch (e){}
       }
     }
   })
@@ -249,7 +251,7 @@ angular.module('CallApp', ['ionic', 'ngCordova', 'CallAppcontrollers'])
             result = results.rows.item(0).log;
           }
           if (!result) {
-            $location.path('app/landing');
+            $location.path('landing');
           }
           else {
             $location.path('app/landing');

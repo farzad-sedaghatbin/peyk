@@ -104,54 +104,35 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
   $scope.doLogin = function( form ) {
 		//$state.go('view', {movieid: 1});
 		// $state.go('app.landing');
-		if( form.$valid ){
-			 var link = 'login';
-			 var post_data = {
-								'secret_key': secret_key,
-								'Email'    : $scope.login.mail ,
-								'Password' : $scope.login.pwd
-							 };
-		   WebService.show_loading();
-
-			 var promise = WebService.send_data( link,post_data);
-
-			 promise.then(function(data){
-
-				 $ionicLoading.hide();
-				 data = data[0];
-
-				 if(data.status == 'failed'){
-					$scope.login.message = data.message;
-				 }else if(data.status == 'success'){
-					//alert(JSON.stringify(data,null,4));
-
-					var user_data = { "Id"        : data.id,
-														"Name"      : data.mobile,
-														"Email"     : data.email,
-														"User_name" : data.username,
-														"Mobile"    : data.mobile,
-														"token"    	: data.token,
-
-													};
-					localStorage.setItem('user_data',JSON.stringify(user_data));
-					$rootScope.user_data = JSON.parse( localStorage.getItem('user_data') );
-					$scope.modal.sign_in.hide();
-
-           //my codes
-           $http.defaults.headers.common.Authorization = data.token;
-           var db = openDatabase('mydb', '1.0', 'Test DB', 1024 * 1024);
-           db.transaction(function (tx) {
-             tx.executeSql('INSERT INTO ANIJUU (name, log) VALUES (?, ?)', ["username", username]);
-             tx.executeSql('INSERT INTO ANIJUU (name, log) VALUES (?, ?)', ["myToken", data.token]);
-           });
-					$state.go('app.landing', {}, {reload: true});
-				 }
-
-			 })
-		}else{
-			form.mail.$setDirty();
-			form.pwd.$setDirty();
-		}
+    if (form.$valid) {
+      try {
+        delete $http.defaults.headers.common.Authorization;
+      }catch (e){
+      }
+      var url = "https://migmig.cfapps.io/api/1/user_authenticate";
+      var data = {
+        username: $scope.login.mail,
+        password: $scope.login.pwd,
+        rememberMe: false
+      };
+      $http.post(url, data).success(function (data, status, headers, config) {
+        $rootScope.username = username;
+        $http.defaults.headers.common.Authorization = data.token;
+        var sqldata = JSON.stringify(data);
+        var db = openDatabase('mydb', '1.0', 'Test DB', 1024 * 1024);
+        db.transaction(function (tx) {
+          tx.executeSql('INSERT INTO ANIJUU (name, log) VALUES (?, ?)', ["username", username]);
+          tx.executeSql('INSERT INTO ANIJUU (name, log) VALUES (?, ?)', ["myToken", data.token]);
+        });
+        $state.go('app.landing', {}, {reload: true});
+      }).catch(function (err) {
+      });
+    } else {
+      form.mail.$setDirty();
+      form.pwd.$setDirty();
+    }
+    $scope.modal.sign_in.hide();
+    $state.go('app.landing', {}, {reload: true});
 
 	};
   var newItems = [];
@@ -236,42 +217,31 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
 								'Name'			: "ibnu",
 							 }
 	  */
-  		WebService.show_loading();
-
-			 var promise = WebService.send_data( link,post_data);
-
-			 promise.then(function(data){
-
-				 $ionicLoading.hide();
-
-				 if(data.status == 'failed'){
-
-					$scope.signUp.error_list = data.error_list;
-
-					$ionicPopup.alert({
-						title: '<p class="text-center color-yellow">FAILED</p>',
-
-						template: "<div ng-show='signUp.error_list.length' class='text-center  m-top-20'>"+
-													"<span ng-repeat='error in signUp.error_list' class='color-yellow d-block'>" +
-													   "{{error.message}} "+
-													"</span>"+
-											"</div>",
-						 scope: $scope,
-					});
-
-				 }else if(data.status == 'success'){
-						var user_data = post_data;
-						user_data.token = data.token;
-
-						localStorage.setItem('user_data',JSON.stringify(user_data));
-
-						$rootScope.user_data = JSON.parse( localStorage.getItem('user_data') );
-
-						$scope.modal.sign_up.hide();
-						$state.go('app.landing', {}, {reload: true});
-				 }
-
-			 })
+      var url = "https://migmig.cfapps.io/api/1/signup";
+      var data = {
+        firstName: $scope.signUp.name,
+        lastName: $scope.signUp.name,
+        username: $scope.signUp.user_name,
+        mobile: $scope.signUp.mobile,
+        password: $scope.signUp.pwd
+      };
+      $http.post(url, data)
+        .success(function (suc) {
+          if (suc == "201") {
+            $ionicPopup.alert({
+              title: '<span class="myText">خطا</span>',
+              template: '<div class="myText" style="text-align: right">کاربر دیگری با نام کاربری شما قبلا ثبت نام کرده</div>'
+            });
+          } else {
+            $ionicPopup.alert({
+              title: '<span class="myText">پیام</span>',
+              template: '<div class="myText" style="text-align: right">ثبت نام با شما با موفقیت انجام شد</div>'
+            });
+            $(".popup").css("width", "90%");
+          }
+          $state.go("app.landing");
+        }).error(function (err) {
+      });
 		}else{
 			form.pwd.$setDirty();
 			form.number.$setDirty();
