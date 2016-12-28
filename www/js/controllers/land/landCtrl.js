@@ -81,7 +81,7 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
     });
   };
 
-  var socket = new WebSocket("wss://migmig.cfapps.io:4443/driverHandler");
+  var socket = new WebSocket("ws://127.0.0.1:8080/driverHandler");
   var interval;
   socket.onopen = function () {
     interval = $interval(function () {
@@ -112,7 +112,7 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
           position: start,
           map: $scope.map,
           title: '',
-          icon: startImage 
+          icon: startImage
         });
         var end = new google.maps.LatLng(data.tripInfo.dlat, data.tripInfo.dlng);
         endMarker = new google.maps.Marker({
@@ -211,7 +211,7 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
       $("#availableText").html("خارج از دسترس");
       $http({
         method: "POST",
-        url: "https://192.168.161.111:8080/api/1/unavailable"
+        url: "http://192.168.161.111:8080/api/1/unavailable"
       }).then(function (resp) {
       }, function (err) {
       });
@@ -240,7 +240,7 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
     $scope.pop_status = 3;
     $http({
       method: "POST",
-      url: "https://migmig.cfapps.io/api/1/arrived",
+      url: "http://127.0.0.1:8080/api/1/arrived",
       data: $scope.tripInfo.uid
     }).then(function (resp) {
     }, function (err) {
@@ -252,7 +252,7 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
     $scope.pop_status = 2;
     $http({
       method: "POST",
-      url: "https://migmig.cfapps.io/api/1/approvedDriver",
+      url: "http://127.0.0.1:8080/api/1/approvedDriver",
       data: $scope.tripInfo.uid
     }).then(function (resp) {
       $interval.cancel(interval);
@@ -268,7 +268,7 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
     animateMyPop();
     $http({
       method: "POST",
-      url: "https://migmig.cfapps.io/api/1/rejectBeforeDriver",
+      url: "http://127.0.0.1:8080/api/1/rejectBeforeDriver",
       data: $scope.tripInfo.uid
     }).then(function (resp) {
     }, function (err) {
@@ -279,7 +279,7 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
     resetAllThings();
     $http({
       method: "POST",
-      url: "https://migmig.cfapps.io/api/1/rejectAfterDriver",
+      url: "http://127.0.0.1:8080/api/1/rejectAfterDriver",
       data: $scope.tripInfo.uid
     }).then(function (resp) {
     }, function (err) {
@@ -302,7 +302,7 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
     resetAllThings();
     $http({
       method: "POST",
-      url: "https://migmig.cfapps.io/api/1/endOfTrip",
+      url: "http://127.0.0.1:8080/api/1/endOfTrip",
       data: $scope.tripInfo.uid
     }).then(function (resp) {
     }, function (err) {

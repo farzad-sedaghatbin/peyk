@@ -109,14 +109,14 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
         delete $http.defaults.headers.common.Authorization;
       }catch (e){
       }
-      var url = "https://migmig.cfapps.io/api/1/user_authenticate";
+      var url = "http://127.0.0.1:8080/api/1/user_authenticate";
       var data = {
         username: $scope.login.mail,
         password: $scope.login.pwd,
         rememberMe: false
       };
       $http.post(url, data).success(function (data, status, headers, config) {
-        $rootScope.username = username;
+        // $scope.username = username;
         $http.defaults.headers.common.Authorization = data.token;
         var sqldata = JSON.stringify(data);
         var db = openDatabase('mydb', '1.0', 'Test DB', 1024 * 1024);
@@ -124,6 +124,7 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
           tx.executeSql('INSERT INTO ANIJUU (name, log) VALUES (?, ?)', ["username", username]);
           tx.executeSql('INSERT INTO ANIJUU (name, log) VALUES (?, ?)', ["myToken", data.token]);
         });
+        $scope.modal.sign_in.hide();
         $state.go('app.landing', {}, {reload: true});
       }).catch(function (err) {
       });
@@ -131,8 +132,7 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
       form.mail.$setDirty();
       form.pwd.$setDirty();
     }
-    $scope.modal.sign_in.hide();
-    $state.go('app.landing', {}, {reload: true});
+
 
 	};
   var newItems = [];
@@ -217,7 +217,7 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
 								'Name'			: "ibnu",
 							 }
 	  */
-      var url = "https://migmig.cfapps.io/api/1/signup";
+      var url = "http://127.0.0.1:8080/api/1/signup";
       var data = {
         firstName: $scope.signUp.name,
         lastName: $scope.signUp.name,
@@ -281,7 +281,7 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
 	$scope.load_trips = function(){
     $http({
       method: "POST",
-      url: "http://migmig.cfapps.io/api/1/driverTrips"
+      url: "http://127.0.0.1:8080/api/1/driverTrips"
     }).then(function (resp) {
       $rootScope.Trips = resp.data;
       $rootScope.active_trip = $rootScope.Trips.inProgressTrips;
@@ -313,7 +313,7 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
         $scope.oauthResult = result;
 				//alert(JSON.stringify($scope.oauthResult,null,4))
 					WebService.show_loading();
-				  $http.get("https://graph.facebook.com/v2.2/me", { params: { access_token: $scope.oauthResult.access_token, fields: "id,name,gender,picture", format: "json" }}).then(function(result) {
+				  $http.get("http://graph.facebook.com/v2.2/me", { params: { access_token: $scope.oauthResult.access_token, fields: "id,name,gender,picture", format: "json" }}).then(function(result) {
 								$scope.profileData = result.data;
 								$scope.social_login( $scope.profileData.id );
 								//alert(JSON.stringify($scope.profileData,null,4))
@@ -332,7 +332,7 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
     };
 	 $scope.googleLogin = function () {
 
-      $cordovaOauth.google("961941792261-65dbtr9khlc6auv8u9n78icmjtvbpj9h.apps.googleusercontent.com", ["https://www.googleapis.com/auth/urlshortener", "https://www.googleapis.com/auth/userinfo.email"]).then(function (result) {
+      $cordovaOauth.google("961941792261-65dbtr9khlc6auv8u9n78icmjtvbpj9h.apps.googleusercontent.com", ["http://www.googleapis.com/auth/urlshortener", "http://www.googleapis.com/auth/userinfo.email"]).then(function (result) {
         // $scope.oauthResult = result;
 				alert(JSON.stringify( result ,null,4))
       }, function (error) {
