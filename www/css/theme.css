@@ -14,7 +14,7 @@
 .bg-grey{  background-color: #212224}
 
 /* common color */
-.color-yellow{ color:  #F2C21E !important;}
+.color-yellow{ color: #F84E0E !important;}
 .color-gery{ color: #929292 !important }
 .color-d-gery{ color: #4d4d4d !important }
 
@@ -77,7 +77,7 @@
 
 .popup-buttons.row {}
 
-.popup-buttons .button {border: 1px solid #1C1C1C !important; color: #F2C21E !important; background-color:#444444 !important; border-radius: 5px !important; }
+.popup-buttons .button {border: 1px solid #1C1C1C !important; color:#F84E0E !important; background-color:#444444 !important; border-radius: 5px !important; }
 
 
 
@@ -90,6 +90,7 @@
 #my-pop{
 
 	/* height: 50%; */
+
 	position: absolute;
 	z-index: 20;
 	left: 0;

@@ -60,8 +60,8 @@
 
 #menu-list .item{  border: none; border-bottom: 1px solid #161616; }
 #menu-list .wrap-it .item{ padding-top: 12px !important; padding-bottom: 12px !important;}
-a.active-menu{color: #F2C21E !important;}
-a.active-menu *{color: #F2C21E !important;}
+a.active-menu{color:#F84E0E !important;}
+a.active-menu *{color:#F84E0E !important;}
 .no-border{ border: none !important;}
 
 #profile-box{ margin-top: 30px;}
@@ -112,14 +112,14 @@ ion-scroll[direction=x] {
 
 ion-header-bar .back-text ,
 ion-header-bar .ion-ios-arrow-back{
-	color:  #F2C21E !important;
+	color: #F84E0E !important;
 }
 #det-box1{
 	padding: 10px;
 }
 
 .yellow-hr{
-	height: 1px !important; background-color: #F2C21E !important;position: relative; ;
+	height: 1px !important; background-color:#F84E0E !important;position: relative; ;
 }
 .mid-item{  display: block;
     margin: -10px auto 0;
