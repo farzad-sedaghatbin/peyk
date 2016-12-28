@@ -1,4 +1,4 @@
-App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoading, $compile, $ionicModal, $window, $timeout, $ionicPopup, landInit, WebService, $interval, $cordovaNativeAudio) {
+App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoading, $compile, $ionicModal, $window, $timeout, $ionicPopup, landInit, WebService, $interval, $cordovaNativeAudio,$cordovaVibration) {
 
 
 
@@ -142,6 +142,8 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
             console.log(error);
           });
         $cordovaNativeAudio.play("migmig");
+        $cordovaVibration.vibrate(100);
+
         break;
     }
   };
