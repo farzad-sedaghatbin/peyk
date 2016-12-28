@@ -1,7 +1,7 @@
 /* BG COLOR
 =================*/
 
-.bg-yellow{ background-color: #F2C21E; }
+.bg-yellow{ background-color: #F84E0E; }
 .bg-black{ background-color: #000;}
 .bg-white{background-color: #fff;}
 
@@ -63,7 +63,7 @@
     background-repeat: no-repeat;
     background-position: center center;
 }
-/* #set-top{ border: 1px solid #F2C21E;} */
+/* #set-top{ border: 1px solid #F84E0E;} */
 
 .popup{ background-color: #444444 !important; border-radius: 10px !important;}
 

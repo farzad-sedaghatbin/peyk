@@ -84,7 +84,7 @@ ion-scroll[direction=x] {
 	color: #fff;
 }
 .item-rate{ border-right: 1px solid #1C1C1C; height: 80px;}
-.active_cab{ border-top: 2px solid #F2C21E;}
+.active_cab{ border-top: 2px solid #F84E0E;}
 
 #trip-date{ }
 
@@ -102,7 +102,7 @@ ion-scroll[direction=x] {
 
 .Menu-tab-head{ height: 35px; line-height: 35px;  }
 #head-tab-area .col{border: 1px solid #161616;}
-#head-tab-area .col.active{ background-color: #F2C21E; color:#000; }
+#head-tab-area .col.active{ background-color: #F84E0E; color:#000; }
 #content-tab-area{ padding: 10px 0 0 20px; height: calc(100% - 50px); overflow: auto;}
 #rateCard-tab-area{  height: calc(100% - 50px); overflow: auto;}
 #content-tab-area .item{ border: none !important; border-bottom: 1px solid #5B5C5D !important;
