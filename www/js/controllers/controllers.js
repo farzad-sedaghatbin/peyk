@@ -109,7 +109,7 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
         delete $http.defaults.headers.common.Authorization;
       }catch (e){
       }
-      var url = "http://192.168.161.111:8080/api/1/user_authenticate";
+      var url = "https://migmig.cfapps.io/api/1/user_authenticate";
       var data = {
         username: $scope.login.mail,
         password: $scope.login.pwd,
@@ -153,16 +153,21 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
       $scope.insurance = result;
     }
   }
-  $scope.remove = function (type) {
-    if (type == 'DRIVER'){
+  $scope.remove = function (item) {
+    if (item.type == 'DRIVER'){
       $scope.driver = null;
-    } else if (type == 'LICENSE'){
+    } else if (item.type == 'LICENSE'){
       $scope.license = null;
-    } else if (type == 'CAR'){
+    } else if (item.type == 'CAR'){
       $scope.car = null;
     } else {
       $scope.insurance = null;
     }
+    $.each($scope.items, function( index, value ) {
+      if (value.thumbnail == item.thumbnail){
+        $scope.items.splice(index,1);
+      }
+    });
   };
   $scope.items = [];
   $scope.gallery = function () {
@@ -258,7 +263,7 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
         template: '<p class="text-center color-gery">' + $filter('langTranslate')("عکس بیمه نامه انتخاب نشده است", $rootScope.appConvertedLang['Enter_pickup_location']) + '</p>'
       });
     }
-      var url = "http://192.168.161.111:8080/api/1/signup";
+      var url = "https://migmig.cfapps.io/api/1/signup";
       var data = {
         firstName: $scope.signUp.name,
         lastName: $scope.signUp.name,
@@ -286,6 +291,7 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
           }
           $state.go("app.landing");
         }).error(function (err) {
+        alert("sdfsdf")
       });
 		}else{
 			form.pwd.$setDirty();
@@ -320,7 +326,7 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
   $scope.updateWallet = function () {
     $http({
       method: "POST",
-      url: "http://192.168.161.111:8080/api/1/refreshMoney"
+      url: "https://migmig.cfapps.io/api/1/refreshMoney"
     }).then(function (resp) {
       $rootScope.wallet = resp.data;
     }, function (err) {
@@ -330,7 +336,7 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
 	$scope.load_trips = function(){
     $http({
       method: "POST",
-      url: "http://192.168.161.111:8080/api/1/driverTrips"
+      url: "https://migmig.cfapps.io/api/1/driverTrips"
     }).then(function (resp) {
       $rootScope.Trips = resp.data;
       $rootScope.active_trip = $rootScope.Trips.inProgressTrips;
