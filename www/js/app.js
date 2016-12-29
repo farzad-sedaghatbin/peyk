@@ -116,7 +116,9 @@ angular.module('CallApp', ['ionic', 'ngCordova', 'CallAppcontrollers'])
       }, null);
     });
     var setUsername = function (result) {
-      $rootScope.username = result;
+      var data = result.split(",");
+      $rootScope.username = data[0];
+      $rootScope.wallet = data[1];
     };
     db.transaction(function (tx) {
       tx.executeSql('SELECT d.log FROM ANIJUU d WHERE d.name="myToken"', [], function (tx, results) {
@@ -204,16 +206,6 @@ angular.module('CallApp', ['ionic', 'ngCordova', 'CallAppcontrollers'])
           'menuContent': {
             templateUrl: 'templates/navigation.html',
             controller: 'navigationCtrl'
-          }
-        }
-      })
-
-      .state('app.peyk', {
-        url: '/peyk',
-        views: {
-          'menuContent': {
-            templateUrl: 'templates/peyk.html',
-            controller: 'peykCtrl'
           }
         }
       })

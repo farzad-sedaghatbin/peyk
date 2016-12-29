@@ -109,22 +109,21 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
         delete $http.defaults.headers.common.Authorization;
       }catch (e){
       }
-      var url = "http://127.0.0.1:8080/api/1/user_authenticate";
+      var url = "http://192.168.161.111:8080/api/1/user_authenticate";
       var data = {
         username: $scope.login.mail,
         password: $scope.login.pwd,
         rememberMe: false
       };
       $http.post(url, data).success(function (data, status, headers, config) {
-        // $scope.username = username;
+        $rootScope.username = $scope.login.mail;
+        $rootScope.wallet = data.wallet;
         $http.defaults.headers.common.Authorization = data.token;
-        var sqldata = JSON.stringify(data);
         var db = openDatabase('mydb', '1.0', 'Test DB', 1024 * 1024);
         db.transaction(function (tx) {
-          tx.executeSql('INSERT INTO ANIJUU (name, log) VALUES (?, ?)', ["username", username]);
+          tx.executeSql('INSERT INTO ANIJUU (name, log) VALUES (?, ?)', ["username", $rootScope.username + "," + $rootScope.wallet]);
           tx.executeSql('INSERT INTO ANIJUU (name, log) VALUES (?, ?)', ["myToken", data.token]);
         });
-        $scope.modal.sign_in.hide();
         $state.go('app.landing', {}, {reload: true});
       }).catch(function (err) {
       });
@@ -132,11 +131,10 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
       form.mail.$setDirty();
       form.pwd.$setDirty();
     }
-
-
+    $scope.modal.sign_in.hide();
 	};
-  var newItems = [];
-  $scope.chose = function () {
+  $scope.chose = function (type) {
+    $scope.type = type;
     $ionicModal.fromTemplateUrl('templates/select.html', {
       scope: $scope
     }).then(function (modal) {
@@ -144,6 +142,29 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
       $rootScope.mainModal.show();
     });
   };
+  function setVariable(result) {
+    if ($scope.type == 'DRIVER'){
+      $scope.driver = result;
+    } else if ($scope.type == 'LICENSE'){
+      $scope.license = result;
+    } else if ($scope.type == 'CAR'){
+      $scope.car = result;
+    } else {
+      $scope.insurance = result;
+    }
+  }
+  $scope.remove = function (type) {
+    if (type == 'DRIVER'){
+      $scope.driver = null;
+    } else if (type == 'LICENSE'){
+      $scope.license = null;
+    } else if (type == 'CAR'){
+      $scope.car = null;
+    } else {
+      $scope.insurance = null;
+    }
+  };
+  $scope.items = [];
   $scope.gallery = function () {
     var options = {sourceType: Camera.PictureSourceType.PHOTOLIBRARY};
     navigator.camera.getPicture(function cameraSuccess(imageUri) {
@@ -152,11 +173,10 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
           var reader = new FileReader();
           reader.onloadend = function(evt) {
             //todo: farzad breakpoint
-            newItems.push(evt.target.result);
+            setVariable(evt.target.result);
             $scope.items.push({
-              type : "img",
               thumbnail : imageUri,
-              media : imageUri
+              type : $scope.type
             });
             $scope.$apply();
           };
@@ -174,12 +194,12 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
         fileEntry.file(function (file) {
           var reader = new FileReader();
           reader.onloadend = function(evt) {
-            newItems.push(evt.target.result);
+            setVariable(evt.target.result);
             $scope.items.push({
-              type : "img",
               thumbnail : imageUri,
-              media : imageUri
-            })
+              type : $scope.type
+            });
+            $scope.$apply();
           };
           reader.readAsDataURL(file);
         });
@@ -217,13 +237,38 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
 								'Name'			: "ibnu",
 							 }
 	  */
-      var url = "http://127.0.0.1:8080/api/1/signup";
+		if (!$scope.driver){
+      $ionicPopup.alert({
+        title: '<p class="text-center color-yellow">' + $filter('langTranslate')("نقص در اطلاعات", $rootScope.appConvertedLang['FAILED']) + '</p>',
+        template: '<p class="text-center color-gery">' + $filter('langTranslate')("عکس راننده انتخاب نشده است", $rootScope.appConvertedLang['Enter_pickup_location']) + '</p>'
+      });
+    } else if(!$scope.license){
+      $ionicPopup.alert({
+        title: '<p class="text-center color-yellow">' + $filter('langTranslate')("نقص در اطلاعات", $rootScope.appConvertedLang['FAILED']) + '</p>',
+        template: '<p class="text-center color-gery">' + $filter('langTranslate')("عکس گواهینامه انتخاب نشده است", $rootScope.appConvertedLang['Enter_pickup_location']) + '</p>'
+      });
+    } else if (!$scope.car) {
+      $ionicPopup.alert({
+        title: '<p class="text-center color-yellow">' + $filter('langTranslate')("نقص در اطلاعات", $rootScope.appConvertedLang['FAILED']) + '</p>',
+        template: '<p class="text-center color-gery">' + $filter('langTranslate')("عکس کارت ماشین انتخاب نشده است", $rootScope.appConvertedLang['Enter_pickup_location']) + '</p>'
+      });
+    } else if (!$scope.insurance){
+      $ionicPopup.alert({
+        title: '<p class="text-center color-yellow">' + $filter('langTranslate')("نقص در اطلاعات", $rootScope.appConvertedLang['FAILED']) + '</p>',
+        template: '<p class="text-center color-gery">' + $filter('langTranslate')("عکس بیمه نامه انتخاب نشده است", $rootScope.appConvertedLang['Enter_pickup_location']) + '</p>'
+      });
+    }
+      var url = "http://192.168.161.111:8080/api/1/signup";
       var data = {
         firstName: $scope.signUp.name,
         lastName: $scope.signUp.name,
         username: $scope.signUp.user_name,
         mobile: $scope.signUp.mobile,
-        password: $scope.signUp.pwd
+        password: $scope.signUp.pwd,
+        driver : $scope.driver,
+        license : $scope.license,
+        car : $scope.car,
+        insurance : $scope.insurance
       };
       $http.post(url, data)
         .success(function (suc) {
@@ -272,16 +317,20 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
 
 	};
 
-
-
-  $scope.peyk = function(){
-    $state.go("app.peyk");
+  $scope.updateWallet = function () {
+    $http({
+      method: "POST",
+      url: "http://192.168.161.111:8080/api/1/refreshMoney"
+    }).then(function (resp) {
+      $rootScope.wallet = resp.data;
+    }, function (err) {
+    });
   };
 
 	$scope.load_trips = function(){
     $http({
       method: "POST",
-      url: "http://127.0.0.1:8080/api/1/driverTrips"
+      url: "http://192.168.161.111:8080/api/1/driverTrips"
     }).then(function (resp) {
       $rootScope.Trips = resp.data;
       $rootScope.active_trip = $rootScope.Trips.inProgressTrips;

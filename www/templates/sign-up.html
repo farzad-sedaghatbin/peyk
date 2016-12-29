@@ -43,15 +43,12 @@
 
             <div class='input-box'>
               <div class="error-container " ng-show="sign_up_form.number.$dirty && sign_up_form.number.$invalid">
-                <small class="error	 " ng-show="sign_up_form.number.$error.required">شماره موبایل خود را وارد کنید
-                </small>
-                <small class="error	 " ng-show="sign_up_form.number.$error.number">یک شماره معتبر وارد کنید</small>
                 <small class="error	 " ng-show="sign_up_form.number.$error.minlength">یک شماره معتبر وارد کنید</small>
                 <small class="error	 " ng-show="sign_up_form.number.$error.maxlength">یک شماره معتبر وارد کنید</small>
               </div>
 
               <input name='number' placeholder="شماره موبایل" ng-model='signUp.mobile' type='number'
-                     class='color-yellow' type='text' ng-minlength="10" ng-maxlength="10" required/>
+                     class='color-yellow' type='text' ng-minlength="11" ng-maxlength="11" required/>
               <img class='input-icon icon-20' src='img/icons/mobile.png'/>
 
             </div>
@@ -59,11 +56,10 @@
 
             <div class='input-box'>
               <div class="error-container " ng-show="sign_up_form.mail.$dirty && sign_up_form.mail.$invalid">
-                <small class="error	 " ng-show="sign_up_form.mail.$error.required">ایمیل خود را وارد کنید</small>
                 <small class="error	 " ng-show="sign_up_form.mail.$error.email">یک ایمیل معتبر وارد کنید</small>
               </div>
 
-              <input name='mail' type='email' required ng-model='signUp.mail' placeholder="ایمیل" class='color-yellow'
+              <input name='mail' type='email' ng-model='signUp.mail' placeholder="ایمیل" class='color-yellow'
                      type='text'/>
               <img class='input-icon icon-20' src='img/icons/mail.png'/>
             </div>
@@ -92,13 +88,28 @@
 
             <div class="m-top-20">
               <div>
-                <button ng-click="chose()" style="margin: 0 auto;width: 80%;font-size: large"
-                        class="btn bg-yellow color-white big-font">انتخاب عکس
+                <button ng-click="chose('DRIVER')" style="margin: 0 auto;width: 80%;font-size: large"
+                        class="btn bg-yellow color-white big-font">عکس راننده
                 </button>
               </div>
-              <ion-list show-delete="shouldShowDelete"
+              <div class="m-top-10">
+                <button ng-click="chose('LICENSE')" style="margin: 0 auto;width: 80%;font-size: large"
+                        class="btn bg-yellow color-white big-font">عکس گواهینامه
+                </button>
+              </div>
+              <div class="m-top-10">
+                <button ng-click="chose('CAR')" style="margin: 0 auto;width: 80%;font-size: large"
+                        class="btn bg-yellow color-white big-font">عکس کارت ماشین
+                </button>
+              </div>
+              <div class="m-top-10">
+                <button ng-click="chose('INSURANCE')" style="margin: 0 auto;width: 80%;font-size: large"
+                        class="btn bg-yellow color-white big-font">عکس بیمه نامه
+                </button>
+              </div>
+              <ion-list show-delete="true"
                         show-reorder="false"
-                        can-swipe="listCanSwipe">
+                        can-swipe="true">
                 <ion-item ng-repeat="item in items"
                           class="item-thumbnail-left">
                   <img ng-src="{{item.thumbnail}}"/>
@@ -107,7 +118,7 @@
                     مشاهده
                   </ion-option-button>
                   <ion-delete-button class="ion-minus-circled"
-                                     ng-click="remove(item.media,$index)">
+                                     ng-click="remove(item.type)">
                   </ion-delete-button>
                 </ion-item>
               </ion-list>
@@ -126,7 +137,7 @@
 
 <script id="templates/select.html" type="text/ng-template">
   <ion-modal-view style="min-height: 150px;top: 80%">
-    <ion-header-bar class="bar bar-header bar-positive">
+    <ion-header-bar class="bar bar-header bar-positive" style="background-color: #F84E0E">
       <button class="button button-clear button-primary myText" ng-click="mainModal.hide()">بستن</button>
     </ion-header-bar>
     <ion-content class="padding">

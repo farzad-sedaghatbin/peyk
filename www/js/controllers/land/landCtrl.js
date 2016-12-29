@@ -81,7 +81,7 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
     });
   };
 
-  var socket = new WebSocket("ws://127.0.0.1:8080/driverHandler");
+  var socket = new WebSocket("ws://192.168.161.111:8080/driverHandler");
   var interval;
   socket.onopen = function () {
     interval = $interval(function () {
@@ -123,6 +123,7 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
         });
         bound.extend(start);
         bound.extend(end);
+        drawPath(start,end);
         $scope.map.fitBounds(bound);
         animateMyPop();
         $scope.tripInfo.state = "request";
@@ -135,7 +136,6 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
 
         $cordovaNativeAudio
           .preloadSimple('migmig', 'audio/migmig.mp3')
-
           .then(function (msg) {
             console.log(msg);
           }, function (error) {
@@ -147,6 +147,23 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
         break;
     }
   };
+  function drawPath(start, end) {
+    var ren = new google.maps.DirectionsRenderer({
+      'draggable': false,
+      suppressMarkers: true
+    });
+    ren.setMap($scope.map);
+    var ser = new google.maps.DirectionsService();
+    ser.route({
+      'origin': start,
+      'destination': end,
+      'travelMode': google.maps.DirectionsTravelMode.DRIVING
+    }, function (res, sts) {
+      if (sts == google.maps.DirectionsStatus.OK) {
+        ren.setDirections(res);
+      }
+    });
+  }
   $scope.clicked_item = function (index) {
     // $window.alert(item);
     $scope.active_cab = index;
@@ -242,7 +259,7 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
     $scope.pop_status = 3;
     $http({
       method: "POST",
-      url: "http://127.0.0.1:8080/api/1/arrived",
+      url: "http://192.168.161.111:8080/api/1/arrived",
       data: $scope.tripInfo.uid
     }).then(function (resp) {
     }, function (err) {
@@ -254,7 +271,7 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
     $scope.pop_status = 2;
     $http({
       method: "POST",
-      url: "http://127.0.0.1:8080/api/1/approvedDriver",
+      url: "http://192.168.161.111:8080/api/1/approvedDriver",
       data: $scope.tripInfo.uid
     }).then(function (resp) {
       $interval.cancel(interval);
@@ -270,7 +287,7 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
     animateMyPop();
     $http({
       method: "POST",
-      url: "http://127.0.0.1:8080/api/1/rejectBeforeDriver",
+      url: "http://192.168.161.111:8080/api/1/rejectBeforeDriver",
       data: $scope.tripInfo.uid
     }).then(function (resp) {
     }, function (err) {
@@ -281,7 +298,7 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
     resetAllThings();
     $http({
       method: "POST",
-      url: "http://127.0.0.1:8080/api/1/rejectAfterDriver",
+      url: "http://192.168.161.111:8080/api/1/rejectAfterDriver",
       data: $scope.tripInfo.uid
     }).then(function (resp) {
     }, function (err) {
@@ -304,7 +321,7 @@ App.controller('landCtrl', function ($scope, $rootScope, $q, $http, $ionicLoadin
     resetAllThings();
     $http({
       method: "POST",
-      url: "http://127.0.0.1:8080/api/1/endOfTrip",
+      url: "http://192.168.161.111:8080/api/1/endOfTrip",
       data: $scope.tripInfo.uid
     }).then(function (resp) {
     }, function (err) {

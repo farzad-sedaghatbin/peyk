@@ -34,19 +34,25 @@
           <div class="row no-padding b-border-light">
             <div class="col  r-border-light p-10 text-center">
               <p class='color-white p-head myText'>مبدا</p>
-              <p class='color-gery'>{{tripInfo.source}}</p>
+              <p class='color-gery myText'>{{tripInfo.source}}</p>
             </div>
           </div>
           <div class="row no-padding b-border-light">
             <div class="col  r-border-light p-10 text-center">
               <p class='color-white p-head myText'>مقصد</p>
-              <p class='color-gery'>{{tripInfo.destination}}</p>
+              <p class='color-gery myText'>{{tripInfo.destination}}</p>
             </div>
           </div>
           <div class="row no-padding b-border-light">
             <div class="col  p-10 text-center">
               <p class='color-white p-head myText'>هزینه</p>
-              <p class='color-gery'>{{tripInfo.cost}}</p>
+              <p class='color-gery myText'>{{tripInfo.cost}}</p>
+            </div>
+          </div>
+          <div class="row no-padding b-border-light" ng-if="tripInfo.description">
+            <div class="col  p-10 text-center">
+              <p class='color-white p-head myText'>توضیحات کاربر</p>
+              <p class='color-gery myText'>{{tripInfo.description}}</p>
             </div>
           </div>
         </div>
