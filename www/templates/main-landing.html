@@ -9,7 +9,7 @@
         <!--<ion-toggle ng-model="airplaneMode" toggle-class="toggle-calm">Airplane Mode</ion-toggle>-->
         <div ng-click="availableOrNot()" class="item item-toggle toggle-large ng-valid" ng-model="airplaneMode"
              toggle-class="toggle-calm" style="padding-right: 15px;border-style: none">
-          <div style="direction: rtl;color: #F84E0E"><span id="availableText" class="myText">در دسترس</span></div>
+          <div style="direction: rtl;color: #F2C21E"><span id="availableText" class="myText">در دسترس</span></div>
           <label class="toggle toggle-assertive disable-user-behavior" style="right: inherit">
             <input type="checkbox" ng-model="airplaneMode"
                    class="ng-untouched ng-valid ng-dirty ng-valid-parse"
@@ -34,25 +34,19 @@
           <div class="row no-padding b-border-light">
             <div class="col  r-border-light p-10 text-center">
               <p class='color-white p-head myText'>مبدا</p>
-              <p class='color-gery myText'>{{tripInfo.source}}</p>
+              <p class='color-gery'>{{tripInfo.source}}</p>
             </div>
           </div>
           <div class="row no-padding b-border-light">
             <div class="col  r-border-light p-10 text-center">
               <p class='color-white p-head myText'>مقصد</p>
-              <p class='color-gery myText'>{{tripInfo.destination}}</p>
+              <p class='color-gery'>{{tripInfo.destination}}</p>
             </div>
           </div>
           <div class="row no-padding b-border-light">
             <div class="col  p-10 text-center">
               <p class='color-white p-head myText'>هزینه</p>
-              <p class='color-gery myText'>{{tripInfo.cost}}</p>
-            </div>
-          </div>
-          <div class="row no-padding b-border-light" ng-if="tripInfo.description">
-            <div class="col  p-10 text-center">
-              <p class='color-white p-head myText'>توضیحات کاربر</p>
-              <p class='color-gery myText'>{{tripInfo.description}}</p>
+              <p class='color-gery'>{{tripInfo.cost}}</p>
             </div>
           </div>
         </div>

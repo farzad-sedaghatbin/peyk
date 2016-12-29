@@ -33,8 +33,8 @@
 				<div class='list'>
 					<a menu-close  class="item item-icon-right item-icon-left color-yellow bg-dark" ng-style="{'line-height': '20px'}" href="#/app/settings">
 						<!-- <img class='icon-30' src='img/logo.png'/>	 -->
-						<span>{{username}}</span>
-						<p class='color-gery'>{{wallet}}</p>
+						<span>{{user_data.User_name}}</span>
+						<p class='color-gery'>{{money}}</p>
 						<i class="icon ion-gear-b  color-yellow"></i>
 					</a>
 				</div>
@@ -55,7 +55,7 @@
             پیک های من
             <i class="icon ion-speedometer f-size-25"></i>
           </a>
-          <a mainmenu ng-click='updateWallet()' class="item item-icon-left item-icon-right color-gery myText">
+          <a  menu-close mainmenu ng-click='peyk()' class="item item-icon-left item-icon-right color-gery myText">
             <i class="icon ion-ios-arrow-back f-size-25"></i>
           بروزرسانی حساب مالی
             <i class="icon ion-social-euro f-size-25"></i>
