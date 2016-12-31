@@ -30,7 +30,7 @@ App.controller('myTripCtrl', function($scope,$rootScope, $ionicLoading, $compile
 	$scope.show_details = function( index ){
     $http({
       method: "POST",
-      url: "http://127.0.0.1:8080/api/1/detail"
+      url: "https://migmig.cfapps.io/api/1/detail"
     }).then(function (resp) {
       $rootScope.details = resp.data;
       $state.go("app.tripDetials")
