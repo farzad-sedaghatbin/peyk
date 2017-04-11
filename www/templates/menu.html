@@ -33,8 +33,8 @@
 				<div class='list'>
 					<a menu-close  class="item item-icon-right item-icon-left color-yellow bg-dark" ng-style="{'line-height': '20px'}" href="#/app/settings">
 						<!-- <img class='icon-30' src='img/logo.png'/>	 -->
-						<span>{{user_data.User_name}}</span>
-						<p class='color-gery'>{{money}}</p>
+						<span class="myText">{{username}}</span>
+						<p class='color-gery myText'>{{wallet}}</p>
 						<i class="icon ion-gear-b  color-yellow"></i>
 					</a>
 				</div>
@@ -43,19 +43,18 @@
 			<div class='wrap-it' style="direction: rtl">
 				<div class='list' >
 
-				  <a  menu-close mainmenu class="item item-icon-left item-icon-right color-gery active-menu myText" href="#/app/landing">
-
+				  <a menu-close mainmenu style="text-align: right" class="item item-icon-left item-icon-right color-gery active-menu myText" href="#/app/landing">
             <i class="icon ion-ios-arrow-back f-size-25 color-d-gery"></i>
 						پیک های فعال
             <i class="icon ion-android-car f-size-25 color-d-gery"></i>
 				  </a>
 
-          <a  menu-close mainmenu ng-click='load_trips()' class="item item-icon-left item-icon-right color-gery myText">
+          <a  menu-close mainmenu style="text-align: right" ng-click='load_trips()' class="item item-icon-left item-icon-right color-gery myText">
             <i class="icon ion-ios-arrow-back f-size-25"></i>
             پیک های من
             <i class="icon ion-speedometer f-size-25"></i>
           </a>
-          <a  menu-close mainmenu ng-click='peyk()' class="item item-icon-left item-icon-right color-gery myText">
+          <a mainmenu style="text-align: right" ng-click='updateWallet()' class="item item-icon-left item-icon-right color-gery myText">
             <i class="icon ion-ios-arrow-back f-size-25"></i>
           بروزرسانی حساب مالی
             <i class="icon ion-social-euro f-size-25"></i>
@@ -96,13 +95,13 @@
 						Call Support
 					<i class="icon ion-ios-arrow-forward f-size-25 color-d-gery"></i>
 				  </a>-->
-				 <a class="item item-icon-left item-icon-right color-gery no-border myText" href="#">
+				 <a style="text-align: right" class="item item-icon-left item-icon-right color-gery no-border myText" href="#">
            <i class="icon ion-ios-arrow-back f-size-25 color-d-gery"></i>
 						درباره ی ما
            <i class="icon ion-ios-information f-size-25 color-d-gery"></i>
 				  </a>
 
-					<a  menu-close  ng-click='logout()' class="item item-icon-left item-icon-right color-gery no-border myText" >
+					<a  menu-close style="text-align: right"  ng-click='logout()' class="item item-icon-left item-icon-right color-gery no-border myText" >
             <i class="icon ion-ios-arrow-back f-size-25 color-d-gery"></i>
 							خروج
 

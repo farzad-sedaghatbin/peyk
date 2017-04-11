@@ -22,7 +22,6 @@ angular.module('CallApp', ['ionic', 'ngCordova', 'CallAppcontrollers'])
 
     }
   })
-
   .filter("menuLangTranslate", function () {
     return function (englishInput, all_rides, completed, booked) {
       if (all_rides === undefined || completed === undefined || booked === undefined) {
@@ -77,9 +76,6 @@ angular.module('CallApp', ['ionic', 'ngCordova', 'CallAppcontrollers'])
       $ionicPlatform.registerBackButtonAction(function (e) {
         //alert($ionicHistory.currentStateName())
         if ($ionicHistory.currentStateName() == 'landing' || $ionicHistory.currentStateName() == 'app.landing') {
-          // alert('exit');
-          // ionic.Platform.exitApp();
-
           navigator.app.clearCache();
           navigator.app.exitApp();
         }
@@ -121,6 +117,20 @@ angular.module('CallApp', ['ionic', 'ngCordova', 'CallAppcontrollers'])
       $rootScope.wallet = data[1];
     };
     db.transaction(function (tx) {
+      tx.executeSql('SELECT d.log FROM ANIJUU d WHERE d.name="userid"', [], function (tx, results) {
+        var len = results.rows.length, i, result = '';
+        if (!results.rows || results.rows.length == 0) {
+          result = null;
+        } else {
+          result = results.rows.item(0).log;
+        }
+        setUserId(result)
+      }, null);
+    });
+    var setUserId = function (result) {
+      $rootScope.userid = result;
+    };
+    db.transaction(function (tx) {
       tx.executeSql('SELECT d.log FROM ANIJUU d WHERE d.name="myToken"', [], function (tx, results) {
         var len = results.rows.length, i, result = '';
         if (!results.rows || results.rows.length == 0) {
@@ -133,7 +143,7 @@ angular.module('CallApp', ['ionic', 'ngCordova', 'CallAppcontrollers'])
     });
     var setToken = function (result) {
       if (result) {
-        $http.defaults.headers.common.Authorization = result;
+        $http.defaults.headers.common.Authorization = "Bearer " + result;
       } else {
         try {
           delete $http.defaults.headers.common.Authorization;
@@ -144,7 +154,8 @@ angular.module('CallApp', ['ionic', 'ngCordova', 'CallAppcontrollers'])
   // .config(function($ionicConfigProvider) {
   // if(!ionic.Platform.isIOS())$ionicConfigProvider.scrolling.jsScrolling(false);
   // })
-  .config(function ($stateProvider, $urlRouterProvider, $cordovaInAppBrowserProvider) {
+  .config(function ($stateProvider, $urlRouterProvider, $cordovaInAppBrowserProvider,$httpProvider) {
+    $httpProvider.interceptors.push('authHttpResponseInterceptor');
     setTimeout(function () {
       navigator.splashscreen.hide();
     }, 3000);

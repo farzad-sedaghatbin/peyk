@@ -2,57 +2,57 @@
 
 var App = angular.module('CallAppcontrollers',[]);
 
-App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModal, $timeout,$state,$ionicLoading, $ionicPopup,$http, $cordovaOauth, $cordovaSplashscreen,$ionicHistory, WebService) {
+App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModal, $timeout,$state,$ionicLoading, $ionicPopup,$http, $cordovaOauth, $cordovaSplashscreen,$ionicHistory, WebService,$interval) {
 
-	var link = 'fetchUserAppLanguage';
-    var post_data ="";
-    var promise = WebService.send_data(link, post_data);
-    promise.then(function (data) {
-        //console.log(data);
-        $rootScope.appConvertedLang=data;
-    });
+  var link = 'fetchUserAppLanguage';
+  var post_data ="";
+  var promise = WebService.send_data(link, post_data);
+  promise.then(function (data) {
+    //console.log(data);
+    $rootScope.appConvertedLang=data;
+  });
 
-	//localStorage.removeItem('user_data');
+  //localStorage.removeItem('user_data');
 
   //$cordovaSplashscreen.show();
 
-	 function set_net( status ){
-			if( status == 'online'){
-				$('.net-error').hide();
-				$ionicLoading.hide();
-			}else{
-				$('.net-error').show();
-				WebService.show_loading();
-			}
+  function set_net( status ){
+    if( status == 'online'){
+      $('.net-error').hide();
+      $ionicLoading.hide();
+    }else{
+      $('.net-error').show();
+      WebService.show_loading();
+    }
 
-		}
-	  	//
-		// if( $cordovaNetwork.isOffline() ){
-		//
-		// 	set_net('offline');
-		//
-		// }else{
-			if( localStorage.getItem('user_data') === null ){
+  }
+  //
+  // if( $cordovaNetwork.isOffline() ){
+  //
+  // 	set_net('offline');
+  //
+  // }else{
+  if( localStorage.getItem('user_data') === null ){
 
-			}else{
+  }else{
 
-				$rootScope.user_data = JSON.parse( localStorage.getItem('user_data') );
-				$ionicHistory.nextViewOptions({
-						historyRoot: true
-				});
+    $rootScope.user_data = JSON.parse( localStorage.getItem('user_data') );
+    $ionicHistory.nextViewOptions({
+      historyRoot: true
+    });
 
-				$state.go('app.landing', {}, {reload: true});
-				//$state.go('app.landing');
-			}
-		// }
+    $state.go('app.landing', {}, {reload: true});
+    //$state.go('app.landing');
+  }
+  // }
 
-		$rootScope.$on('$cordovaNetwork:online', function(event, networkState){
-       set_net( 'online' );
-    })
+  $rootScope.$on('$cordovaNetwork:online', function(event, networkState){
+    set_net( 'online' );
+  })
 
-	  $rootScope.$on('$cordovaNetwork:offline', function(event, networkState){
-       set_net( 'offline' );
-    })
+  $rootScope.$on('$cordovaNetwork:offline', function(event, networkState){
+    set_net( 'offline' );
+  })
 
 
 
@@ -62,7 +62,7 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
   //$scope.sign_up_form = {};
 
   // Create the login modal that we will use later
-	$scope.modal = {};
+  $scope.modal = {};
 
   $ionicModal.fromTemplateUrl('templates/login.html', {
     scope: $scope,
@@ -90,20 +90,21 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
 
   // Open the login modal
   $scope.show_login1 = function() {
-		 $scope.login = {};
-		$scope.modal.sign_in.show();
+    $scope.login = {};
+    $scope.modal.sign_in.show();
   };
 
   $scope.sign_up = function() {
-		$scope.signUp = {};
+    $scope.signUp = {};
     $scope.modal.sign_up.show();
   };
 
 
   // Perform the login action when the user submits the login form
   $scope.doLogin = function( form ) {
-		//$state.go('view', {movieid: 1});
-		// $state.go('app.landing');
+    WebService.startLoading();
+    //$state.go('view', {movieid: 1});
+    // $state.go('app.landing');
     if (form.$valid) {
       try {
         delete $http.defaults.headers.common.Authorization;
@@ -116,23 +117,29 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
         rememberMe: false
       };
       $http.post(url, data).success(function (data, status, headers, config) {
+        WebService.stopLoading();
         $rootScope.username = $scope.login.mail;
         $rootScope.wallet = data.wallet;
-        $http.defaults.headers.common.Authorization = data.token;
+        $rootScope.userid = data.userid;
+        $http.defaults.headers.common.Authorization = "Bearer " + data.token;
         var db = openDatabase('mydb', '1.0', 'Test DB', 1024 * 1024);
         db.transaction(function (tx) {
           tx.executeSql('INSERT INTO ANIJUU (name, log) VALUES (?, ?)', ["username", $rootScope.username + "," + $rootScope.wallet]);
+          tx.executeSql('INSERT INTO ANIJUU (name, log) VALUES (?, ?)', ["userid", $rootScope.userid]);
           tx.executeSql('INSERT INTO ANIJUU (name, log) VALUES (?, ?)', ["myToken", data.token]);
         });
         $state.go('app.landing', {}, {reload: true});
       }).catch(function (err) {
+        WebService.stopLoading();
+        WebService.myErrorHandler(err,true);
       });
     } else {
       form.mail.$setDirty();
       form.pwd.$setDirty();
+      WebService.stopLoading();
     }
     $scope.modal.sign_in.hide();
-	};
+  };
   $scope.chose = function (type) {
     $scope.type = type;
     $ionicModal.fromTemplateUrl('templates/select.html', {
@@ -143,14 +150,23 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
     });
   };
   function setVariable(result) {
+    $.each($scope.items, function( index, value ) {
+      if (value.type == $scope.type){
+        $scope.items.splice(index,1);
+      }
+    });
     if ($scope.type == 'DRIVER'){
       $scope.driver = result;
+      $scope.title = "راننده"
     } else if ($scope.type == 'LICENSE'){
       $scope.license = result;
+      $scope.title = "گواهینامه"
     } else if ($scope.type == 'CAR'){
       $scope.car = result;
+      $scope.title = "کارت ماشین"
     } else {
       $scope.insurance = result;
+      $scope.title = "بیمه نامه"
     }
   }
   $scope.remove = function (item) {
@@ -181,8 +197,10 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
             setVariable(evt.target.result);
             $scope.items.push({
               thumbnail : imageUri,
-              type : $scope.type
+              type : $scope.type,
+              title : $scope.title
             });
+            $rootScope.mainModal.hide();
             $scope.$apply();
           };
           reader.readAsDataURL(file);
@@ -202,8 +220,10 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
             setVariable(evt.target.result);
             $scope.items.push({
               thumbnail : imageUri,
-              type : $scope.type
+              type : $scope.type,
+              title : $scope.title
             });
+            $rootScope.mainModal.hide();
             $scope.$apply();
           };
           reader.readAsDataURL(file);
@@ -213,56 +233,57 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
       console.debug("Unable to obtain picture: " + error, "app");
     }, options);
   };
-	$scope.signUp = {};
-	$scope.do_signUp = function( form ) {
-		//$state.go('view', {movieid: 1});
-		if(
-				 form.$valid
-				 && $scope.signUp.pwd ==  $scope.signUp.c_pwd
-				//true
-			){
+  $scope.signUp = {};
+  $scope.do_signUp = function( form ) {
+    WebService.startLoading();
+    //$state.go('view', {movieid: 1});
+    if(
+      form.$valid
+      && $scope.signUp.pwd ==  $scope.signUp.c_pwd
+    //true
+    ){
 
-			 var link = 'sign_up';
+      var link = 'sign_up';
 
-			var post_data = {
-								'secret_key': secret_key,
-								'Email'     : $scope.signUp.mail ,
-								'Password'  : $scope.signUp.pwd ,
-								'Mobile'    : $scope.signUp.mobile ,
-								'User_name' : $scope.signUp.user_name ,
-								'Name'			: $scope.signUp.name,
-							 }
+      var post_data = {
+        'secret_key': secret_key,
+        'Email'     : $scope.signUp.mail ,
+        'Password'  : $scope.signUp.pwd ,
+        'Mobile'    : $scope.signUp.mobile ,
+        'User_name' : $scope.signUp.user_name ,
+        'Name'			: $scope.signUp.name
+      }
 
-		/*
-		var post_data = {
-								'Email'     : "mynameisibnu@gmail.com" ,
-								'Password'  : "123456" ,
-								'Mobile'    : "9946973457" ,
-								'User_name' : "ibkarbin" ,
-								'Name'			: "ibnu",
-							 }
-	  */
-		if (!$scope.driver){
-      $ionicPopup.alert({
-        title: '<p class="text-center color-yellow">' + $filter('langTranslate')("نقص در اطلاعات", $rootScope.appConvertedLang['FAILED']) + '</p>',
-        template: '<p class="text-center color-gery">' + $filter('langTranslate')("عکس راننده انتخاب نشده است", $rootScope.appConvertedLang['Enter_pickup_location']) + '</p>'
-      });
-    } else if(!$scope.license){
-      $ionicPopup.alert({
-        title: '<p class="text-center color-yellow">' + $filter('langTranslate')("نقص در اطلاعات", $rootScope.appConvertedLang['FAILED']) + '</p>',
-        template: '<p class="text-center color-gery">' + $filter('langTranslate')("عکس گواهینامه انتخاب نشده است", $rootScope.appConvertedLang['Enter_pickup_location']) + '</p>'
-      });
-    } else if (!$scope.car) {
-      $ionicPopup.alert({
-        title: '<p class="text-center color-yellow">' + $filter('langTranslate')("نقص در اطلاعات", $rootScope.appConvertedLang['FAILED']) + '</p>',
-        template: '<p class="text-center color-gery">' + $filter('langTranslate')("عکس کارت ماشین انتخاب نشده است", $rootScope.appConvertedLang['Enter_pickup_location']) + '</p>'
-      });
-    } else if (!$scope.insurance){
-      $ionicPopup.alert({
-        title: '<p class="text-center color-yellow">' + $filter('langTranslate')("نقص در اطلاعات", $rootScope.appConvertedLang['FAILED']) + '</p>',
-        template: '<p class="text-center color-gery">' + $filter('langTranslate')("عکس بیمه نامه انتخاب نشده است", $rootScope.appConvertedLang['Enter_pickup_location']) + '</p>'
-      });
-    }
+      /*
+       var post_data = {
+       'Email'     : "mynameisibnu@gmail.com" ,
+       'Password'  : "123456" ,
+       'Mobile'    : "9946973457" ,
+       'User_name' : "ibkarbin" ,
+       'Name'			: "ibnu",
+       }
+       */
+      if (!$scope.driver){
+        $ionicPopup.alert({
+          title: '<p class="text-center color-yellow">' + $filter('langTranslate')("نقص در اطلاعات", $rootScope.appConvertedLang['FAILED']) + '</p>',
+          template: '<p class="text-center color-gery">' + $filter('langTranslate')("عکس راننده انتخاب نشده است", $rootScope.appConvertedLang['Enter_pickup_location']) + '</p>'
+        });
+      } else if(!$scope.license){
+        $ionicPopup.alert({
+          title: '<p class="text-center color-yellow">' + $filter('langTranslate')("نقص در اطلاعات", $rootScope.appConvertedLang['FAILED']) + '</p>',
+          template: '<p class="text-center color-gery">' + $filter('langTranslate')("عکس گواهینامه انتخاب نشده است", $rootScope.appConvertedLang['Enter_pickup_location']) + '</p>'
+        });
+      } else if (!$scope.car) {
+        $ionicPopup.alert({
+          title: '<p class="text-center color-yellow">' + $filter('langTranslate')("نقص در اطلاعات", $rootScope.appConvertedLang['FAILED']) + '</p>',
+          template: '<p class="text-center color-gery">' + $filter('langTranslate')("عکس کارت ماشین انتخاب نشده است", $rootScope.appConvertedLang['Enter_pickup_location']) + '</p>'
+        });
+      } else if (!$scope.insurance){
+        $ionicPopup.alert({
+          title: '<p class="text-center color-yellow">' + $filter('langTranslate')("نقص در اطلاعات", $rootScope.appConvertedLang['FAILED']) + '</p>',
+          template: '<p class="text-center color-gery">' + $filter('langTranslate')("عکس بیمه نامه انتخاب نشده است", $rootScope.appConvertedLang['Enter_pickup_location']) + '</p>'
+        });
+      }
       var url = "https://migmig.cfapps.io/api/1/signup";
       var data = {
         firstName: $scope.signUp.name,
@@ -277,161 +298,98 @@ App.controller('AppCtrl', function($scope,$rootScope,$cordovaNetwork, $ionicModa
       };
       $http.post(url, data)
         .success(function (suc) {
-          if (suc == "201") {
-            $ionicPopup.alert({
-              title: '<span class="myText">خطا</span>',
-              template: '<div class="myText" style="text-align: right">کاربر دیگری با نام کاربری شما قبلا ثبت نام کرده</div>'
-            });
-          } else {
-            $ionicPopup.alert({
-              title: '<span class="myText">پیام</span>',
-              template: '<div class="myText" style="text-align: right">ثبت نام با شما با موفقیت انجام شد</div>'
-            });
-            $(".popup").css("width", "90%");
-          }
+          WebService.stopLoading();
           $state.go("app.landing");
         }).error(function (err) {
-        alert("sdfsdf")
+        WebService.stopLoading();
+        WebService.myErrorHandler(err,false);
       });
-		}else{
-			form.pwd.$setDirty();
-			form.number.$setDirty();
-			form.mail.$setDirty();
-			form.name.$setDirty();
-			form.user_name.$setDirty();
+    }else{
+      form.pwd.$setDirty();
+      form.number.$setDirty();
+      form.mail.$setDirty();
+      form.name.$setDirty();
+      form.user_name.$setDirty();
 
-		}
+    }
 
-	};
+  };
+  // MENU
+  $scope.logout = function(){
+    var db = openDatabase('mydb', '1.0', 'Test DB', 1024 * 1024);
+    db.transaction(function (tx) {
+      tx.executeSql('DELETE FROM ANIJUU');
+    });
+    localStorage.removeItem('user_data');
+    WebService.show_loading();
+    resetBeforeLogout();
+    $timeout(function(){
+      $ionicLoading.hide();
+      $ionicHistory.nextViewOptions({
+        disableAnimate: true,
+        disableBack: true
+      });
+      $state.go('landing', {}, {reload: true});
 
-	// MENU
-
-	$scope.logout = function(){
-		localStorage.removeItem('user_data');
-		WebService.show_loading();
-
-		$timeout(function(){
-				$ionicLoading.hide();
-				$ionicHistory.nextViewOptions({
-					disableAnimate: true,
-					disableBack: true
-				});
-				$state.go('landing', {}, {reload: true});
-
-		}, 1000);
-		//$state.go('landing');
-
-	};
+    }, 1000);
+  };
+  function resetBeforeLogout(){
+    if ($rootScope.startMarker) {
+      $rootScope.startMarker.setMap(null);
+      $rootScope.endMarker.setMap(null);
+    }
+    $rootScope.pop_status = 0;
+    $interval.cancel($rootScope.interval);
+    $rootScope.socket.close();
+  }
 
   $scope.updateWallet = function () {
+    WebService.startLoading();
     $http({
       method: "POST",
       url: "https://migmig.cfapps.io/api/1/refreshMoney"
     }).then(function (resp) {
       $rootScope.wallet = resp.data;
+      WebService.stopLoading();
     }, function (err) {
+      WebService.stopLoading();
+      WebService.myErrorHandler(err,false);
     });
   };
 
-	$scope.load_trips = function(){
+  $scope.load_trips = function(){
+    WebService.startLoading();
     $http({
       method: "POST",
       url: "https://migmig.cfapps.io/api/1/driverTrips"
     }).then(function (resp) {
+      WebService.stopLoading();
       $rootScope.Trips = resp.data;
       $rootScope.active_trip = $rootScope.Trips.inProgressTrips;
-      $state.go("app.mytrip")
+      $state.go("app.mytrip");
     }, function (err) {
+      WebService.stopLoading();
+      WebService.myErrorHandler(err,false);
     });
-	};
-	$scope.load_card_rate = function(){
+  };
+  $scope.load_card_rate = function(){
 
-		 WebService.show_loading();
-		 $rootScope.rateCard_menu_selected = 0;
+    WebService.show_loading();
+    $rootScope.rateCard_menu_selected = 0;
 
-		 var link = 'load_card_rate';
-		 var post_data = {
-							'transfertype'    : 'Point to Point Transfer',
-						}
-		 var promise = WebService.send_data( link,post_data);
+    var link = 'load_card_rate';
+    var post_data = {
+      'transfertype'    : 'Point to Point Transfer'
+    }
+    var promise = WebService.send_data( link,post_data);
 
-		 promise.then(function(data){
-			 $rootScope.All_cabs = data;
-			 $rootScope.active_rateCard =  $rootScope.All_cabs.day;
-			 $ionicLoading.hide();
-		 });
+    promise.then(function(data){
+      $rootScope.All_cabs = data;
+      $rootScope.active_rateCard =  $rootScope.All_cabs.day;
+      $ionicLoading.hide();
+    });
 
-	}
-
-	 $scope.facebookLogin = function () {
-      $cordovaOauth.facebook("415834555280405", ["email"]).then(function (result) {
-        $scope.oauthResult = result;
-				//alert(JSON.stringify($scope.oauthResult,null,4))
-					WebService.show_loading();
-				  $http.get("http://graph.facebook.com/v2.2/me", { params: { access_token: $scope.oauthResult.access_token, fields: "id,name,gender,picture", format: "json" }}).then(function(result) {
-								$scope.profileData = result.data;
-								$scope.social_login( $scope.profileData.id );
-								//alert(JSON.stringify($scope.profileData,null,4))
-						}, function(error1) {
-								alert("There was a problem getting your profile.  Check the logs for details.");
-								//console.log(error);
-								//alert(JSON.stringify(error1,null,4))
-						});
-
-
-
-      }, function (error) {
-        $scope.oauthResult = "OAUTH ERROR (see console)";
-        console.log(error);
-      });
-    };
-	 $scope.googleLogin = function () {
-
-      $cordovaOauth.google("961941792261-65dbtr9khlc6auv8u9n78icmjtvbpj9h.apps.googleusercontent.com", ["http://www.googleapis.com/auth/urlshortener", "http://www.googleapis.com/auth/userinfo.email"]).then(function (result) {
-        // $scope.oauthResult = result;
-				alert(JSON.stringify( result ,null,4))
-      }, function (error) {
-        $scope.oauthResult = "OAUTH ERROR (see console)";
-        console.log(error);
-      });
-    };
-
-
-		$scope.social_login = function(user_name){
-			//alert(user_name);
-
-					 var link = 'social_login';
-					 var post_data = {
-										'Email'      : user_name ,
-										'secret_key' : secret_key
-									 }
-
-					 // WebService.show_loading();
-
-					 var promise = WebService.send_data( link,post_data);
-
-					 promise.then(function(data){
-
-						 $ionicLoading.hide();
-
-						 if(data.status == 'success'){
-								//alert(JSON.stringify(data));
-
-							var user_data = {
-																"User_name" : user_name,
-																"token"			:	data.token
-															};
-
-							localStorage.setItem('user_data',JSON.stringify(user_data));
-
-							$rootScope.user_data = JSON.parse( localStorage.getItem('user_data') );
-
-							$state.go('app.landing', {}, {reload: true});
-
-						 }
-
-					 })
-		}
+  }
 
 });
 

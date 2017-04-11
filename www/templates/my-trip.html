@@ -10,7 +10,7 @@
 
 			<div id='content-tab-area' class='visible' >
 				<ion-scroll direction="y" style='height: 100% ;direction: rtl' >
-          <a href="#/app/tripDetials" ng-click='show_details($index)' class="item item-icon-left item-icon-right color-gery " ng-repeat='item in active_trip' href="#">
+          <a href="#/app/tripDetials" ng-click='show_details(item.uid)' class="item item-icon-left item-icon-right color-gery " ng-repeat='item in active_trip' href="#">
             <i class="icon ion-ios-arrow-back f-size-25 color-d-gery"></i>
             <p class='color-yellow f-size-17 myText'>{{item.source}}</p>
             <p class='color-yellow f-size-17 myText'>{{item.destination}}</p>

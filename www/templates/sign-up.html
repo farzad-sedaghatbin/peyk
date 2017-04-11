@@ -3,7 +3,8 @@
   <ion-content style="direction: rtl">
     <div style='height: 100%;'>
       <div class='head-bar bg-black'>
-        <p class='vertical-middle text-center color-yellow big-font'>ثبت نام</p>
+        <p class='vertical-middle text-center color-yellow big-font myText'>ثبت نام</p>
+
         <div class='close-icon' ng-click="closeSignUp()">
           <img class='vertical-middle icon-25 ' src='img/icons/close.png'/>
         </div>
@@ -19,23 +20,23 @@
 
             <div class='input-box'>
               <div class="error-container " ng-show="sign_up_form.name.$dirty && sign_up_form.name.$invalid">
-                <small class="error	 " ng-show="sign_up_form.name.$error.required">نام خود را وارد کنید</small>
+                <small class="error	myText" ng-show="sign_up_form.name.$error.required">نام خود را وارد کنید</small>
               </div>
 
-              <input name='name' ng-model='signUp.name' placeholder="نام" class='color-yellow' type='text' required/>
+              <input name='name' ng-model='signUp.name' placeholder="نام" class='color-yellow myText' type='text' required/>
               <img class='input-icon icon-20' src='img/icons/user.png'/>
             </div>
             </br>
 
             <div class='input-box'>
               <div class="error-container " ng-show="sign_up_form.user_name.$dirty && sign_up_form.user_name.$invalid">
-                <small class="error	 " ng-show="sign_up_form.user_name.$error.required">نام کاربری خود را وارد کنید
+                <small class="error	myText" ng-show="sign_up_form.user_name.$error.required">نام کاربری خود را وارد کنید
                 </small>
-                <small class="error	 " ng-show="sign_up_form.user_name.$error.minlength">حداقل ۶ کراکتر</small>
+                <small class="error	myText" ng-show="sign_up_form.user_name.$error.minlength">حداقل ۶ کراکتر</small>
 
               </div>
 
-              <input name='user_name' ng-model='signUp.user_name' placeholder="نام کاربری" class='color-yellow'
+              <input name='user_name' ng-model='signUp.user_name' placeholder="نام کاربری" class='color-yellow myText'
                      type='text' ng-minlength='6' required/>
               <img class='input-icon icon-20' src='img/icons/user.png'/>
             </div>
@@ -43,12 +44,12 @@
 
             <div class='input-box'>
               <div class="error-container " ng-show="sign_up_form.number.$dirty && sign_up_form.number.$invalid">
-                <small class="error	 " ng-show="sign_up_form.number.$error.minlength">یک شماره معتبر وارد کنید</small>
-                <small class="error	 " ng-show="sign_up_form.number.$error.maxlength">یک شماره معتبر وارد کنید</small>
+                <small class="error	myText" ng-show="sign_up_form.number.$error.minlength">یک شماره معتبر وارد کنید</small>
+                <small class="error	myText" ng-show="sign_up_form.number.$error.maxlength">یک شماره معتبر وارد کنید</small>
               </div>
 
               <input name='number' placeholder="شماره موبایل" ng-model='signUp.mobile' type='number'
-                     class='color-yellow' type='text' ng-minlength="11" ng-maxlength="11" required/>
+                     class='color-yellow myText' type='text' ng-minlength="11" ng-maxlength="11" required/>
               <img class='input-icon icon-20' src='img/icons/mobile.png'/>
 
             </div>
@@ -56,10 +57,10 @@
 
             <div class='input-box'>
               <div class="error-container " ng-show="sign_up_form.mail.$dirty && sign_up_form.mail.$invalid">
-                <small class="error	 " ng-show="sign_up_form.mail.$error.email">یک ایمیل معتبر وارد کنید</small>
+                <small class="error	myText" ng-show="sign_up_form.mail.$error.email">یک ایمیل معتبر وارد کنید</small>
               </div>
 
-              <input name='mail' type='email' ng-model='signUp.mail' placeholder="ایمیل" class='color-yellow'
+              <input name='mail' type='email' ng-model='signUp.mail' placeholder="ایمیل" class='color-yellow myText'
                      type='text'/>
               <img class='input-icon icon-20' src='img/icons/mail.png'/>
             </div>
@@ -67,10 +68,10 @@
 
             <div class='input-box'>
               <div class="error-container " ng-show="sign_up_form.pwd.$dirty && sign_up_form.pwd.$invalid">
-                <small class="error	 " ng-show="sign_up_form.pwd.$error.required">رمز عبور</small>
-                <small class="error	 " ng-show="sign_up_form.pwd.$error.minlength">حداقل ۶ کراکتر</small>
+                <small class="error	myText" ng-show="sign_up_form.pwd.$error.required">رمز عبور</small>
+                <small class="error	myText" ng-show="sign_up_form.pwd.$error.minlength">حداقل ۶ کراکتر</small>
               </div>
-              <input name='pwd' ng-model='signUp.pwd' placeholder="رمز عبور" class='color-yellow' ng-minlength='6'
+              <input name='pwd' ng-model='signUp.pwd' placeholder="رمز عبور" class='color-yellow myText' ng-minlength='6'
                      type='password' required/>
               <img class='input-icon icon-20' src='img/icons/lock.png'/>
             </div>
@@ -78,10 +79,10 @@
 
             <div class='input-box'>
               <div class="error-container" ng-show="sign_up_form.pwd.$dirty ">
-                <small class="error " ng-show="(signUp.pwd != signUp.c_pwd) ">رمز عبور یکسان نیست</small>
+                <small class="error myText" ng-show="(signUp.pwd != signUp.c_pwd) ">رمز عبور یکسان نیست</small>
 
               </div>
-              <input name='c_pwd' ng-model='signUp.c_pwd' placeholder="تایید رمز عبور" class='color-yellow'
+              <input name='c_pwd' ng-model='signUp.c_pwd' placeholder="تایید رمز عبور" class='color-yellow myText'
                      type='password' required/>
               <img class='input-icon icon-20' src='img/icons/lockTick.png'/>
             </div>
@@ -89,49 +90,48 @@
             <div class="m-top-20">
               <div>
                 <button ng-click="chose('DRIVER')" style="margin: 0 auto;width: 80%;font-size: large"
-                        class="btn bg-yellow color-white big-font">عکس راننده
+                        class="btn bg-yellow color-white big-font myText">عکس راننده
                 </button>
               </div>
               <div class="m-top-10">
                 <button ng-click="chose('LICENSE')" style="margin: 0 auto;width: 80%;font-size: large"
-                        class="btn bg-yellow color-white big-font">عکس گواهینامه
+                        class="btn bg-yellow color-white big-font myText">عکس گواهینامه
                 </button>
               </div>
               <div class="m-top-10">
                 <button ng-click="chose('CAR')" style="margin: 0 auto;width: 80%;font-size: large"
-                        class="btn bg-yellow color-white big-font">عکس کارت ماشین
+                        class="btn bg-yellow color-white big-font myText">عکس کارت ماشین
                 </button>
               </div>
               <div class="m-top-10">
                 <button ng-click="chose('INSURANCE')" style="margin: 0 auto;width: 80%;font-size: large"
-                        class="btn bg-yellow color-white big-font">عکس بیمه نامه
+                        class="btn bg-yellow color-white big-font myText">عکس بیمه نامه
                 </button>
               </div>
+            </div>
+            <input ng-click='do_signUp(sign_up_form)' class='btn bg-yellow color-white big-font m-top-20 myText' type='button'
+                   value="ثبت نام"/>
+
+            <div class="m-top-20">
               <ion-list show-delete="true"
                         show-reorder="false"
                         can-swipe="true">
                 <ion-item ng-repeat="item in items"
                           class="item-thumbnail-left">
                   <img ng-src="{{item.thumbnail}}"/>
-                  <ion-option-button class="button-info"
-                                     ng-click="preview(item)">
-                    مشاهده
-                  </ion-option-button>
+
+                  <p class="myText">{{item.title}}</p>
                   <ion-delete-button class="ion-minus-circled"
                                      ng-click="remove(item)">
                   </ion-delete-button>
                 </ion-item>
               </ion-list>
             </div>
-
-            <input ng-click='do_signUp(sign_up_form)' class='btn bg-yellow color-white big-font m-top-20' type='button'
-                   value="ثبت نام"/>
-
           </div>
         </div>
       </div>
     </div>
-    <div class='color-white text-center net-error'>به اینترنت متصل نیستید</div>
+    <div class='color-white text-center net-error myText'>به اینترنت متصل نیستید</div>
   </ion-content>
 </ion-modal-view>
 
